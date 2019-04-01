@@ -106,13 +106,14 @@ run antivirus scanners considered of either fast or "medium" speed. We
 can also specify that we want to run all engines (both "fast", "medium",
 "slow" and "very slow" ones) by setting the second argument to
 object.scan() to AV_SPEED_ALL (or to AV_SPEED_SLOW if we want to omit
-the scanners that are really slow, namely, Avast and McAfee):
+the scanners that are really slow, namely, Avast and McAfee).  
+Make sure to update import and add the speed that you want to use:
 
 ```python
 # For all engines
-ret = multi_av.scan(path, multiav.AV_SPEED_ALL)
+ret = multi_av.scan(path, AV_SPEED_ALL)
 # For most of the engines with the only exception of Avast and McAfee
-ret = multi_av.scan(path, multiav.AV_SPEED_SLOW)
+ret = multi_av.scan(path, AV_SPEED_SLOW)
 ```
 
 AV_SPEED_ALL is default behaviour if one doesn't specifies the maximum 
@@ -120,7 +121,7 @@ allowed speed. One can also specify that only fast engines can be
 executed:
 
 ```python
-ret = multi_av.scan(path, multiav.AV_SPEED_FAST)
+ret = multi_av.scan(path, AV_SPEED_FAST)
 ```
 
 By default, MultiAV.py will try to run AV scanners at the same time,
@@ -132,13 +133,13 @@ method object.single_scan() which receives the same arguments as the
 method object.scan(), as in the following example:
 
 ```python
-ret = multi_av.single_scan(path, multiav.AV_SPEED_SLOW)
+ret = multi_av.single_scan(path, AV_SPEED_SLOW)
 ```
 
 One can also scan a single buffer using the object.scan_buffer() API:
 
 ```python
-ret = multiav.scan_buffer(buf, multiav.AV_SPEED_SLOW)
+ret = multiav.scan_buffer(buf, AV_SPEED_SLOW)
 ```
 
 ## Configuration file

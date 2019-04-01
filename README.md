@@ -85,10 +85,10 @@ of how to use the MultiAV API In your own Python tools:
 
 ```python
 import pprint
-import multiav
+from multiav.core import CMultiAV, AV_SPEED_FAST
 
-multi_av = multiav.CMultiAV()
-ret = multi_av.scan(path, multiav.AV_SPEED_MEDIUM)
+multi_av = CMultiAV()
+ret = multi_av.scan(path, AV_SPEED_FAST)
 pprint.pprint(multi_av)
 ```
 
@@ -98,7 +98,7 @@ passing the path to the *.cfg file to the constructor of the Python
 object:
 
 ```python
-multi_av = multiav.CMultiAV("/path/to/cfg")
+multi_av = CMultiAV("/path/to/cfg")
 ```
 
 In the example Python code we're also specifying that we only want to 
@@ -132,7 +132,7 @@ method object.single_scan() which receives the same arguments as the
 method object.scan(), as in the following example:
 
 ```python
-ret = multi_av.scan_single(path, multiav.AV_SPEED_SLOW)
+ret = multi_av.single_scan(path, multiav.AV_SPEED_SLOW)
 ```
 
 One can also scan a single buffer using the object.scan_buffer() API:
@@ -147,7 +147,7 @@ When creating a CMultiAV object one can specify a configuration file
 like in the following example:
 
 ```python
-multi_av = multiav.CMultiAV("/path/to/cfg")
+multi_av = CMultiAV("/path/to/cfg")
 ```
 
 The format of the configuration file is rather easy. There are only 2 or

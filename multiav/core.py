@@ -108,23 +108,23 @@ class CAvScanner:
         if self.pattern is None:
             Exception("Not implemented")
 
-    try:
-        cmd = self.build_cmd(path)
-    except:
-        # There is no entry in the *.cfg file for this AV engine?
-        pass
+        try:
+            cmd = self.build_cmd(path)
+        except:
+            # There is no entry in the *.cfg file for this AV engine?
+            pass
 
-    try:
-        output = check_output(cmd)
-    except CalledProcessError as e:
-        output = e.output
+        try:
+            output = check_output(cmd)
+        except CalledProcessError as e:
+            output = e.output
 
-    pattern = self.pattern
-    matches = re.findall(pattern, output,
-                         re.IGNORECASE | re.MULTILINE)
-    for match in matches:
-        self.results[match[self.file_index]] = match[self.malware_index]
-    return len(self.results) > 0
+        pattern = self.pattern
+        matches = re.findall(pattern, output,
+                            re.IGNORECASE | re.MULTILINE)
+        for match in matches:
+            self.results[match[self.file_index]] = match[self.malware_index]
+        return len(self.results) > 0
 
     def is_disabled(self):
         parser = self.cfg_parser
@@ -154,22 +154,22 @@ class CTrendmicroScanner(CAvScanner):
         except:
             pass
 
-    logdir = '/var/log/TrendMicro/SProtectLinux'
-    logfile = logdir+'/Virus.' + time.strftime('%Y%m%d') + '.0001'
-    call(cmd)
+        logdir = '/var/log/TrendMicro/SProtectLinux'
+        logfile = logdir+'/Virus.' + time.strftime('%Y%m%d') + '.0001'
+        call(cmd)
 
-    with open(logfile, 'r') as log:
-        output = log.read()
-    # Clear the log file
-    reset = open(logfile, 'wb')
-    reset.close()
+        with open(logfile, 'r') as log:
+            output = log.read()
+        # Clear the log file
+        reset = open(logfile, 'wb')
+        reset.close()
 
-    matches1 = re.findall(self.pattern1, output, re.IGNORECASE | re.MULTILINE)
-    matches2 = re.findall(self.pattern2, output, re.IGNORECASE | re.MULTILINE)
-    for i in range(len(matches1)):
-        self.results[matches1[i].split(' (')[0]] = matches2[i]
+        matches1 = re.findall(self.pattern1, output, re.IGNORECASE | re.MULTILINE)
+        matches2 = re.findall(self.pattern2, output, re.IGNORECASE | re.MULTILINE)
+        for i in range(len(matches1)):
+            self.results[matches1[i].split(' (')[0]] = matches2[i]
 
-    return len(self.results) > 0
+        return len(self.results) > 0
 
 
 class CComodoScanner(CAvScanner):
@@ -260,24 +260,24 @@ class CKasperskyScanner(CAvScanner):
         except CalledProcessError as e:
             output = e.output
 
-    ver = os.path.basename(cmd.pop(0))
+        ver = os.path.basename(cmd.pop(0))
 
-    if ver == "kavscanner":
-        self.file_index = 0
-        self.malware_index = 2
-        matches = re.findall(self.pattern2, output,
-                             re.IGNORECASE | re.MULTILINE)
-        for match in matches:
-            self.results[match[self.file_index].split('\x08')[0].rstrip()] =\
-                match[self.malware_index].lstrip().rstrip()
+        if ver == "kavscanner":
+            self.file_index = 0
+            self.malware_index = 2
+            matches = re.findall(self.pattern2, output,
+                                re.IGNORECASE | re.MULTILINE)
+            for match in matches:
+                self.results[match[self.file_index].split('\x08')[0].rstrip()] =\
+                    match[self.malware_index].lstrip().rstrip()
 
-    elif ver == "kav":
-        matches = re.findall(self.pattern, output,
-                             re.IGNORECASE | re.MULTILINE)
-        for match in matches:
-            self.results[match[self.file_index]] = match[self.malware_index]
+        elif ver == "kav":
+            matches = re.findall(self.pattern, output,
+                                re.IGNORECASE | re.MULTILINE)
+            for match in matches:
+                self.results[match[self.file_index]] = match[self.malware_index]
 
-    return len(self.results) > 0
+        return len(self.results) > 0
 
 
 class CClamScanner(CAvScanner):
@@ -299,7 +299,7 @@ class CClamScanner(CAvScanner):
         for root, dirs, files in os.walk(path, topdown=False):
             for name in files:
                 self.scan_one(os.path.join(root, name))
-    return len(self.results)
+        return len(self.results)
 
     def scan(self, path):
         parser = self.cfg_parser
